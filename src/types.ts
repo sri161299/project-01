@@ -1,48 +1,42 @@
-export interface MenuItem {
-  id: string;
-  name: string;
-  category: 'sourdough' | 'viennoiserie' | 'patisserie' | 'savory';
-  tagline: string;
-  description: string;
-  price: number;
-  hydration: string;
-  fermentHours: number;
-  temperature: string;
-  flavorNotes: string[];
-  imageUrl: string;
-  badge?: string;
-  inStock: boolean;
-}
-
-export interface LabPillar {
+export interface IdeaThumb {
   id: string;
   title: string;
-  metric: string;
-  subtitle: string;
-  description: string;
-  iconName: string;
-  details: string[];
+  prompt: string;
+  tag: string;
+  imageUrl: string;
+  category: 'image' | 'video' | 'illustration' | '3d';
 }
 
-export interface ReviewItem {
+export interface GalleryItem {
   id: string;
-  criticName: string;
-  publication: string;
-  role: string;
-  rating: number;
-  quote: string;
-  verdict: string;
-  avatarUrl: string;
-  awardBadge: string;
+  title: string;
+  tag: string;
+  category: string;
+  imageUrl: string;
+  span: 'tall' | 'wide' | 'normal';
+  prompt: string;
+  aspectRatio: string;
+  seed: number;
 }
 
-export interface ReservationData {
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  timeSlot: string;
-  guests: number;
-  experienceType: string;
-  specialRequests: string;
+export interface GenerationVariant {
+  id: string;
+  label: string;
+  imageUrl: string;
+  resolution: string;
 }
+
+export interface GeneratedImage {
+  id: string;
+  imageUrl: string;
+  prompt: string;
+  createdAt: string;
+  aspectRatio: string;
+  imageSize?: string;
+  isEdited?: boolean;
+  originalImageUrl?: string;
+  note?: string;
+  provider?: string;
+  model?: string;
+}
+

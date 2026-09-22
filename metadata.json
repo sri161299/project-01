@@ -1,6 +1,6 @@
 {
-  "name": "SS Bakery",
-  "description": "A futuristic professional bakery crafting next-generation artisan bread, molecular viennoiserie, and sensory patisserie.",
+  "name": "ArchAI",
+  "description": "A premium AI image-generation platform powered by Pollinations.AI with FLUX.1 Schnell and multi-provider fallback inference engine, featuring text-to-image creation, Live Studio canvas, and interactive prompt exploration.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

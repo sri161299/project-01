@@ -1,201 +1,203 @@
-import React from 'react';
-import { Sparkles, ArrowRight, ShieldCheck, Flame, Droplets, Clock, Activity, Award } from 'lucide-react';
-import { BAKERY_INFO } from '../data/bakeryData';
+import React, { useState } from 'react';
+import { Mic, ArrowUp, Plus, Sparkles, Upload, Check } from 'lucide-react';
+import { EXPLORE_IDEAS } from '../data/mockData';
+import { IdeaThumb } from '../types';
 
 interface HeroSectionProps {
-  onExploreClick: () => void;
-  onReserveClick: () => void;
+  onGenerate: (promptText: string) => void;
+  onOpenUpload: () => void;
+  activePrompt: string;
+  setActivePrompt: (prompt: string) => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onReserveClick }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  onGenerate,
+  onOpenUpload,
+  activePrompt,
+  setActivePrompt,
+}) => {
+  const [activeTab, setActiveTab] = useState<'image' | 'video' | 'illustration' | '3d'>('image');
+  const [isListening, setIsListening] = useState(false);
+  const [copiedNotification, setCopiedNotification] = useState(false);
+
+  const tabs: { id: 'image' | 'video' | 'illustration' | '3d'; label: string }[] = [
+    { id: 'image', label: 'Create an image' },
+    { id: 'video', label: 'Create Video' },
+    { id: 'illustration', label: 'Illustration' },
+    { id: '3d', label: '3D Images' },
+  ];
+
+  const handleSelectIdea = (idea: IdeaThumb) => {
+    setActivePrompt(idea.prompt);
+    // Visual flash
+    setCopiedNotification(true);
+    setTimeout(() => setCopiedNotification(false), 1200);
+  };
+
+  const handleTabChange = (tabId: 'image' | 'video' | 'illustration' | '3d') => {
+    setActiveTab(tabId);
+    if (tabId === 'video') {
+      setActivePrompt('Cinematic hyperlapse through neon rain-drenched neo-Tokyo street with reflective puddles, 60fps drone sweep');
+    } else if (tabId === 'illustration') {
+      setActivePrompt('Detailed vector botanical illustration of bioluminescent flora in violet and midnight blue with gold foil lineart');
+    } else if (tabId === '3d') {
+      setActivePrompt('Polished 3D glass isometric architectural pavilion suspended inside crystalline planetary sphere, Octane render 8K');
+    } else {
+      setActivePrompt('Cinematic editorial portrait in glowing neon violet lighting, hyper-realistic, 8k');
+    }
+  };
+
+  const handleMicClick = () => {
+    setIsListening(true);
+    setTimeout(() => {
+      setIsListening(false);
+      setActivePrompt('A surreal mechanical butterfly forged from obsidian glass and violet plasma wings hovering in void');
+    }, 1500);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (activePrompt.trim()) {
+      onGenerate(activePrompt);
+    }
+  };
+
   return (
-    <section id="hero" className="relative min-h-[90vh] flex items-center justify-center pt-10 pb-20 overflow-hidden">
-      {/* Ambient background glow & cyber grid */}
-      <div className="absolute inset-0 cyber-grid opacity-60 pointer-events-none"></div>
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[500px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-[300px] h-[300px] bg-slate-800/40 blur-[100px] rounded-full pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+    <section id="home" className="relative pt-32 sm:pt-40 pb-20 text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
-        {/* Top Status & Quantum Badge */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-6 sm:mb-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-300 text-xs sm:text-sm font-radiocanada backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-            <span className="font-semibold tracking-wider uppercase font-orienta">Quantum Hearth Deck v4.2</span>
-            <span className="text-slate-500">•</span>
-            <span className="text-slate-300">Live 245°C Cryo-Proof Active</span>
-          </div>
+        {/* Small Eyebrow Pill */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e1a4a]/60 border border-[#7864ff]/30 text-xs sm:text-sm font-medium text-[#d6d5ef] mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(85,69,255,0.2)]">
+          <span className="text-[#a79cff] text-sm">✦</span>
+          <span>Smart AI Image Generator</span>
         </div>
 
-        {/* Hero Headline & Subtitle with Orienta & Radio Canada typography */}
-        <div className="text-center max-w-4xl mx-auto mb-12 sm:mb-14">
-          <h1 className="font-orienta text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1] mb-6">
-            The Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-600">Flour & Fire</span>
-          </h1>
-          <p className="font-radiocanada text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-            SS Bakery combines 72-hour bio-fermentation, 84% algorithmic hydration, and precision infrared quartz hearths to create the next evolution of artisan bread & patisserie.
-          </p>
+        {/* Main Headline */}
+        <h1 className="font-serif-display text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.12] tracking-tight text-white max-w-4xl mx-auto mb-6 drop-shadow-[0_0_35px_rgba(117,104,255,0.25)]">
+          Turn Ideas into Stunning<br />
+          <em className="italic font-light text-[#ece8ff]">Visuals In a Second</em>
+        </h1>
 
-          {/* Action CTAs with Universal Button Hover Effect */}
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-            <button
-              id="hero-explore-menu-btn"
-              onClick={onExploreClick}
-              className="btn-universal w-full sm:w-auto text-base !py-3.5 !px-8"
-            >
-              <span>Explore Quantum Menu</span>
-              <ArrowRight className="w-4 h-4 text-slate-950 transition-transform group-hover:translate-x-1" />
-            </button>
-            <button
-              id="hero-reserve-table-btn"
-              onClick={onReserveClick}
-              className="btn-universal-secondary w-full sm:w-auto text-base !py-3.5 !px-8"
-            >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Reserve Atelier Tasting</span>
-            </button>
-          </div>
-        </div>
+        {/* Supporting Text */}
+        <p className="text-base sm:text-lg md:text-xl text-[#c7c6e6] max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+          Transform simple text prompts into stunning visuals in seconds with powerful AI built for creators.
+        </p>
 
-        {/* Condition 8: Whole container hover effect with -translate-y-[30px] */}
-        {/* Main Hero Futuristic Visual & Telemetry Bento Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          
-          {/* Main Visual Display Container with hover-lift-30 */}
-          <div 
-            id="hero-main-visual-container"
-            className="lg:col-span-8 rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 border border-amber-500/30 p-4 sm:p-6 relative overflow-hidden group hover-lift-30 shadow-2xl backdrop-blur-xl"
-          >
-            {/* Ambient Corner Accents */}
-            <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/15 blur-3xl rounded-full pointer-events-none"></div>
+        {/* AI Prompt Interface Card (~75% width) */}
+        <div id="demo" className="w-full max-w-4xl mx-auto mb-7">
+          <div className="relative bg-[#12142e]/70 backdrop-blur-2xl border border-[#7864ff]/25 hover:border-[#8c78ff]/50 rounded-3xl p-5 sm:p-7 text-left shadow-[0_20px_50px_-10px_rgba(0,0,0,0.8),0_0_35px_-5px_rgba(85,69,255,0.25)] transition-all duration-300">
             
-            {/* Visual Image with overlay details */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] w-full bg-slate-950 border border-amber-500/20">
-              <img
-                src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1920&auto=format&fit=crop"
-                alt="SS Bakery Futuristic Artisan Hearth Loaves"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-95 contrast-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#090D16] via-transparent to-black/30"></div>
-              
-              {/* Floating Hologram Badges on Hero Image */}
-              <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2 bg-[#090D16]/90 border border-amber-500/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-                  <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                  <span className="text-xs font-orienta text-slate-200">
-                    Quartz Hearth: <span className="text-amber-400 font-bold">245°C</span>
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 bg-[#090D16]/90 border border-amber-500/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-                  <Activity className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="text-xs font-orienta text-slate-200">
-                    Yeast Cell Activity: <span className="text-amber-400 font-bold">99.2%</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Container Caption & Tech Summary */}
-            <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="font-orienta text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                  <span>Hyper-Artisan Sourdough & Patisserie</span>
-                  <span className="text-xs px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">BATCH #882</span>
-                </h2>
-                <p className="font-radiocanada text-sm text-slate-300 mt-1">
-                  Engineered with 100% single-estate ancient Einkorn grain, wild natural yeast cultures, and infrared stone polymerization.
-                </p>
-              </div>
-              <div className="flex items-center gap-4 shrink-0 text-right">
-                <div className="px-4 py-2 rounded-xl bg-slate-900/80 border border-amber-500/20">
-                  <div className="text-xs font-radiocanada text-slate-400">Crispness Metric</div>
-                  <div className="text-lg font-orienta font-bold text-amber-400">0.82 mm shell</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Condition 8: Side Telemetry Container also with hover-lift-30 */}
-          <div 
-            id="hero-telemetry-container"
-            className="lg:col-span-4 rounded-3xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 border border-amber-500/30 p-6 flex flex-col justify-between hover-lift-30 shadow-2xl backdrop-blur-xl"
-          >
-            <div>
-              <div className="flex items-center justify-between border-b border-amber-500/20 pb-4 mb-5">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-amber-400" />
-                  <h3 className="font-orienta text-lg font-bold text-white">Live Bakery Telemetry</h3>
-                </div>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">
-                  REAL-TIME
+            {/* Top Label */}
+            <div className="flex items-center justify-between mb-3.5">
+              <span className="text-xs sm:text-sm font-medium text-[#9a9bb8] tracking-wide">
+                What do you want to create today?
+              </span>
+              {copiedNotification && (
+                <span className="inline-flex items-center gap-1 text-xs text-[#a59bff] bg-[#5545ff]/20 px-2 py-0.5 rounded-md animate-fade-in">
+                  <Check className="w-3 h-3" /> Prompt loaded
                 </span>
-              </div>
-
-              {/* Telemetry rows */}
-              <div className="space-y-4">
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
-                      <Droplets className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-radiocanada text-slate-400">Dough Hydration</div>
-                      <div className="text-sm font-orienta font-bold text-slate-100">84% Micro-Aerated</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-amber-400 font-mono">OPTIMAL</span>
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
-                      <Clock className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-radiocanada text-slate-400">Cryo-Proof Cycle</div>
-                      <div className="text-sm font-orienta font-bold text-slate-100">72 Hours @ 4.2°C</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-amber-400 font-mono">STAGE 4</span>
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
-                      <Award className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-radiocanada text-slate-400">Satisfaction Score</div>
-                      <div className="text-sm font-orienta font-bold text-slate-100">{BAKERY_INFO.metrics.rating}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-amber-400 font-mono">VANGUARD</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Quick schedule footnote */}
-            <div className="mt-6 pt-4 border-t border-amber-500/20 text-xs font-radiocanada text-slate-400">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-slate-300">Next Fresh Hearth Release:</span>
-                <span className="text-amber-400 font-bold">11:00 AM TODAY</span>
+            {/* Prompt Input Box */}
+            <form onSubmit={handleSubmit} className="mb-6">
+              <div className="flex items-center gap-2 sm:gap-3 bg-[#0a0b1c]/85 border border-[#7864ff]/25 focus-within:border-[#7568ff] focus-within:shadow-[0_0_20px_rgba(85,69,255,0.35)] rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 transition-all">
+                <span className="text-[#7568ff] font-bold text-lg select-none pl-1">+</span>
+                <input
+                  type="text"
+                  value={activePrompt}
+                  onChange={(e) => setActivePrompt(e.target.value)}
+                  placeholder="Create image: Cyberpunk goddess adorned in luminescent orchids, 8k cinematic..."
+                  className="flex-1 bg-transparent border-none outline-none text-white text-sm sm:text-base placeholder:text-[#6a6d88] focus:ring-0"
+                />
+
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <button
+                    type="button"
+                    onClick={handleMicClick}
+                    title="Voice prompt"
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                      isListening
+                        ? 'bg-[#7568ff] text-white animate-pulse'
+                        : 'text-[#8b8ea8] hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <Mic className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    type="submit"
+                    title="Generate image"
+                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#5545ff] to-[#8072ff] hover:from-[#6555ff] hover:to-[#9183ff] text-white flex items-center justify-center shadow-[0_0_18px_rgba(85,69,255,0.6)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                  >
+                    <ArrowUp className="w-5 h-5 stroke-[2.5]" />
+                  </button>
+                </div>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Pre-reserved batches enter warm holding chamber 15 minutes before pickup.
-              </p>
+            </form>
+
+            {/* Explore Ideas Subheading */}
+            <div className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#8b8ea8] mb-3">
+              Explore Ideas
             </div>
 
+            {/* Horizontal Row of Thumbnail Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+              
+              {/* Card 1: Upload a photo */}
+              <button
+                type="button"
+                onClick={onOpenUpload}
+                className="group h-24 rounded-xl border border-dashed border-[#7864ff]/40 hover:border-[#8c78ff] bg-[#141632]/50 hover:bg-[#201d4d]/60 flex flex-col items-center justify-center gap-1.5 p-2 transition-all cursor-pointer text-center"
+              >
+                <div className="w-7 h-7 rounded-full bg-[#5545ff]/20 flex items-center justify-center text-[#a79cff] group-hover:scale-110 group-hover:bg-[#5545ff]/35 transition-all">
+                  <Plus className="w-4 h-4" />
+                </div>
+                <span className="text-[11px] font-medium text-[#d6d5ef] leading-tight">
+                  Upload<br />a photo
+                </span>
+              </button>
+
+              {/* 5 Idea Thumbnail Cards */}
+              {EXPLORE_IDEAS.map((idea) => (
+                <div
+                  key={idea.id}
+                  onClick={() => handleSelectIdea(idea)}
+                  className="group relative h-24 rounded-xl overflow-hidden border border-white/10 hover:border-[#7568ff] shadow-sm hover:shadow-[0_0_15px_rgba(117,104,255,0.4)] cursor-pointer transition-all duration-200 hover:-translate-y-1"
+                >
+                  <img
+                    src={idea.imageUrl}
+                    alt={idea.title}
+                    className="w-full h-full object-cover brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#03040d]/90 via-transparent to-transparent flex items-end p-2">
+                    <span className="text-[11px] font-medium text-white truncate w-full drop-shadow">
+                      {idea.title}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
         </div>
 
+        {/* Small Pill Buttons Below Card */}
+        <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => handleTabChange(tab.id)}
+              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                activeTab === tab.id
+                  ? 'bg-[#5545ff]/25 border border-[#7568ff] text-white shadow-[0_0_15px_rgba(85,69,255,0.3)]'
+                  : 'bg-[#121430]/70 border border-[#7864ff]/20 text-[#c8c7e6] hover:border-[#7864ff]/40 hover:text-white'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );

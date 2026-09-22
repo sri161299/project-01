@@ -2,134 +2,45 @@
 
 @layer base {
   :root {
-    --font-orienta: 'Orienta', sans-serif;
-    --font-radio-canada: 'Radio Canada', sans-serif;
-    --color-obsidian: #090D16;
-    --color-obsidian-card: #0F172A;
-    --color-amber-gold: #F59E0B;
-    --color-amber-light: #FCD34D;
+    --bg-dark: #03040d;
+    --bg-card: rgba(18, 20, 46, 0.65);
+    --accent-primary: #5545ff;
+    --accent-violet: #7568ff;
+    --accent-glow: rgba(117, 104, 255, 0.45);
+    --border-subtle: rgba(120, 100, 255, 0.22);
+    --border-glow: rgba(140, 120, 255, 0.5);
   }
 
   body {
-    font-family: var(--font-radio-canada);
-    background-color: #090D16;
-    color: #F1F5F9;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-dark);
   }
 
-  h1, h2, h3, h4, h5, h6, .font-orienta {
-    font-family: var(--font-orienta);
-  }
-
-  .font-radiocanada {
-    font-family: var(--font-radio-canada);
+  .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
   }
 }
 
-/* Universal Button Style with specified hover effect */
-.btn-universal {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font-orienta);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.95) 100%);
-  color: #090D16;
-  border: 1px solid rgba(253, 230, 138, 0.4);
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  cursor: pointer;
-  white-space: nowrap;
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
 }
 
-.btn-universal::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.6s ease;
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 
-.btn-universal:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.45), 0 0 20px rgba(245, 158, 11, 0.3);
-  border-color: #FDE68A;
-  color: #000000;
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-.btn-universal:hover::before {
-  left: 140%;
+.animate-float-slow {
+  animation: subtleFloat 6s ease-in-out infinite;
 }
-
-.btn-universal:active {
-  transform: translateY(0px) scale(0.99);
-}
-
-/* Secondary Button variant sharing the universal hover dynamics */
-.btn-universal-secondary {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font-orienta);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  color: #F59E0B;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-universal-secondary:hover {
-  transform: translateY(-4px) scale(1.02);
-  background: rgba(245, 158, 11, 0.15);
-  border-color: #F59E0B;
-  color: #FCD34D;
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.25), 0 0 15px rgba(245, 158, 11, 0.2);
-}
-
-.btn-universal-secondary:active {
-  transform: translateY(0px) scale(0.99);
-}
-
-/* Condition 8: All the element should have an hover effect of yaxis -30 as whole container */
-.hover-lift-30 {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-  will-change: transform;
-}
-
-.hover-lift-30:hover {
-  transform: translateY(-30px);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 15px 35px -5px rgba(245, 158, 11, 0.25);
-  border-color: rgba(245, 158, 11, 0.45);
-}
-
-/* Futuristic background grid */
-.cyber-grid {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(245, 158, 11, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245, 158, 11, 0.04) 1px, transparent 1px);
-}
-
-.glow-amber {
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
-}
-
